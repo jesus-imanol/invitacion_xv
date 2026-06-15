@@ -1,26 +1,210 @@
 @import "tailwindcss";
 
+/* =========================================================================
+   TOKENS — tema único CLARO (acuarela femenina). Fuente de verdad: DESIGN.md.
+   Azul del vestido más suave + acento rosa cuarzo + metálico champán.
+   ========================================================================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* --- Paleta --- */
+  --paper: #f5f2fb; /* base lavanda-blanco */
+  --indigo-deep: #2a1c86; /* azul del vestido, un poco más claro */
+  --indigo: #3d2bb0;
+  --lavender: #c3b8ee;
+  --sky: #a9c4f0;
+  --periwinkle: #8aa9e8;
+  --rosa: #e79cc4; /* rosa cuarzo (femenino) */
+  --rosa-soft: #f4cee1;
+  --gold: #c6a667; /* champán metálico (sello, hairlines) */
+  --gold-soft: #e7d4a6;
+  --white: #ffffff;
+
+  /* --- Tipografía (fluida) --- */
+  --text-name: clamp(3.25rem, 13vw, 6.5rem);
+  --text-h1: clamp(2rem, 7vw, 3.25rem);
+  --text-h2: clamp(1.4rem, 5vw, 2.1rem);
+  --text-body: clamp(1rem, 4vw, 1.125rem);
+  --text-label: 0.75rem;
+
+  /* --- Layout --- */
+  --measure: min(92vw, 38rem);
+  --section-y: clamp(3.5rem, 12vw, 7rem);
+
+  /* --- Motion --- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-overshoot: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --dur-fast: 200ms;
+  --dur-base: 450ms;
+  --dur-slow: 700ms;
+
+  /* --- Semánticos (tema único claro; contraste AA verificado) --- */
+  --fg: #2a1c86; /* títulos / texto principal */
+  --fg-soft: #4d4596; /* cuerpo */
+  --fg-dim: #5f5790; /* labels / terciario */
+  --accent: #d268a4; /* rosa femenino (ornamentos) */
+  --accent-cool: #5f7fd4; /* azul de apoyo */
+  --rule: #cdc5ea; /* líneas / divisores */
+  --panel: rgba(255, 255, 255, 0.62);
+  --panel-border: rgba(61, 43, 176, 0.14);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-paper: var(--paper);
+  --color-indigo: var(--indigo);
+  --color-sky: var(--sky);
+  --color-rosa: var(--rosa);
+  --color-gold: var(--gold);
+  --color-white: var(--white);
+
+  --font-script: var(--font-pinyon), cursive;
+  --font-serif: var(--font-cormorant), Georgia, serif;
+  --font-sans: var(--font-jost), system-ui, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =========================================================================
+   BASE
+   ========================================================================= */
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--fg-soft);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .decor-motion {
+    display: none !important;
+  }
+}
+
+/* =========================================================================
+   DECORACIÓN AMBIENTAL (pétalos, destellos, halo)
+   ========================================================================= */
+@keyframes petal-fall {
+  0% {
+    transform: translate3d(0, -12vh, 0) rotate(0deg);
+    opacity: 0;
+  }
+  8% {
+    opacity: var(--petal-opacity, 0.5);
+  }
+  92% {
+    opacity: var(--petal-opacity, 0.5);
+  }
+  100% {
+    transform: translate3d(var(--petal-drift, 4vw), 112vh, 0)
+      rotate(var(--petal-spin, 220deg));
+    opacity: 0;
+  }
+}
+
+@keyframes petal-sway {
+  0%,
+  100% {
+    transform: translateX(0) rotate(-8deg);
+  }
+  50% {
+    transform: translateX(var(--petal-sway, 1.5vw)) rotate(8deg);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.1;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+}
+
+@keyframes scroll-hint {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateY(6px);
+    opacity: 1;
+  }
+}
+
+@keyframes halo-breathe {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.06);
+  }
+}
+
+/* =========================================================================
+   UTILIDADES
+   ========================================================================= */
+.measure {
+  width: var(--measure);
+  margin-inline: auto;
+}
+
+.fg {
+  color: var(--fg);
+}
+.fg-soft {
+  color: var(--fg-soft);
+}
+.fg-dim {
+  color: var(--fg-dim);
+}
+
+.label {
+  font-family: var(--font-sans);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--fg-dim);
+}
+
+/* Tarjeta suave tipo "carta" (glass con relleno sólido de respaldo) */
+.panel-card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 22px;
+  padding: clamp(1.75rem, 7vw, 3rem) clamp(1.25rem, 6vw, 2.5rem);
+  box-shadow: 0 24px 60px -32px rgba(42, 28, 134, 0.4);
+  backdrop-filter: blur(6px);
+}
+@media (prefers-reduced-transparency: reduce) {
+  .panel-card {
+    background: #fbf9ff;
+    backdrop-filter: none;
+  }
 }
