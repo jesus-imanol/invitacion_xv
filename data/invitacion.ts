@@ -92,6 +92,13 @@ export const invitacion = {
 
   // --- Personalización --- "generico" (default) | "porInvitado"
   personalizacion: "generico" as "generico" | "porInvitado",
+
+  // --- Autor / créditos (sello + contacto para contrataciones) ---
+  autor: {
+    nombre: "Jesús Imanol Castillo Avendaño",
+    whatsapp: "5219611798392", // 52 + 1 + 9611798392
+    whatsappDisplay: "961 179 8392",
+  },
 } as const;
 
 export type Invitacion = typeof invitacion;

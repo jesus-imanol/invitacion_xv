@@ -12,3 +12,8 @@ export function waValido(numero: string): boolean {
 export function waLink(numero: string, mensaje: string): string {
   return `https://wa.me/${soloDigitos(numero)}?text=${encodeURIComponent(mensaje)}`;
 }
+
+/** Link de compartir por WhatsApp SIN destinatario (abre selector de chat). */
+export function waShare(mensaje: string): string {
+  return `https://wa.me/?text=${encodeURIComponent(mensaje)}`;
+}

@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/client";
 import NuevaFamiliaForm from "@/components/admin/NuevaFamiliaForm";
 import FamiliaRow from "@/components/admin/FamiliaRow";
 import ScannerPanel from "@/components/admin/ScannerPanel";
+import CreditFooter from "@/components/CreditFooter";
 import type { AdminFamilia } from "@/components/admin/types";
 
 export default function AdminPanel({
@@ -94,6 +95,10 @@ export default function AdminPanel({
       ) : (
         <ScannerPanel />
       )}
+
+      <div style={{ marginTop: "2.5rem" }}>
+        <CreditFooter />
+      </div>
     </div>
   );
 }

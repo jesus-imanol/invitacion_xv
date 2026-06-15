@@ -14,6 +14,7 @@ import Regalos from "@/components/sections/Regalos";
 import PaseQR from "@/components/sections/PaseQR";
 import Rsvp from "@/components/sections/Rsvp";
 import Cierre from "@/components/sections/Cierre";
+import CreditFooter from "@/components/CreditFooter";
 import type { FamiliaPublica } from "@/lib/types";
 
 /** Composición de la invitación. Genérica (sin familia) o personalizada (con familia). */
@@ -36,6 +37,7 @@ export default function Invitacion({ familia }: { familia?: FamiliaPublica }) {
         <Rsvp familia={familia} />
         <Cierre />
       </main>
+      <CreditFooter />
       <MusicToggle />
     </MusicProvider>
   );

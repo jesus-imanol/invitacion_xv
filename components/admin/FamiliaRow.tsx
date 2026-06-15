@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { QRCodeCanvas } from "qrcode.react";
 import { eliminarFamilia } from "@/app/admin/actions";
 import { invitationUrl } from "@/lib/links";
+import ShareButton from "@/components/ShareButton";
+import { invitacion } from "@/data/invitacion";
 import type { AdminFamilia } from "@/components/admin/types";
 
 export default function FamiliaRow({
@@ -86,6 +88,12 @@ export default function FamiliaRow({
         <button onClick={copy} style={smallBtn}>
           {copied ? "¡Copiado!" : "Copiar link"}
         </button>
+        <ShareButton
+          variant="small"
+          label="Compartir"
+          url={link}
+          message={`Invitación a los XV Años de ${invitacion.nombre} para ${familia.nombre}:`}
+        />
         <button onClick={descargarQR} style={smallBtn}>
           Descargar QR
         </button>

@@ -1,5 +1,6 @@
 import Reveal from "@/components/Reveal";
 import Tiara from "@/components/decor/Tiara";
+import ShareButton from "@/components/ShareButton";
 import { invitacion } from "@/data/invitacion";
 
 /** Cierre — nombre + fecha + despedida. */
@@ -46,6 +47,14 @@ export default function Cierre() {
 
       <Reveal delay={0.24}>
         <p className="label">{invitacion.fechaTexto}</p>
+      </Reveal>
+
+      <Reveal delay={0.32}>
+        <div style={{ marginTop: "1.75rem" }}>
+          <ShareButton
+            message={`Te comparto la invitación a los XV Años de ${invitacion.nombre}.`}
+          />
+        </div>
       </Reveal>
     </section>
   );
