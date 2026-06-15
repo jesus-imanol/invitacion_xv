@@ -1,21 +1,36 @@
 import Reveal from "@/components/Reveal";
 import Section from "@/components/ui/Section";
 import SectionHeading from "@/components/ui/SectionHeading";
+import RsvpFamilia from "@/components/sections/RsvpFamilia";
 import { invitacion } from "@/data/invitacion";
 import { waLink, waValido } from "@/lib/whatsapp";
+import type { FamiliaPublica } from "@/lib/types";
 
-/** Confirmación de asistencia vía WhatsApp con mensaje prellenado. */
-export default function Rsvp() {
-  const ok = waValido(invitacion.whatsapp);
-  const mensaje = `Hola, confirmo mi asistencia a los XV Años de ${invitacion.nombre}. `;
-  const href = ok ? waLink(invitacion.whatsapp, mensaje) : undefined;
-
+/** Confirmación de asistencia. Con familia: online + WhatsApp. Genérico: WhatsApp. */
+export default function Rsvp({ familia }: { familia?: FamiliaPublica }) {
   return (
     <Section panel>
       <Reveal>
         <SectionHeading label="Te esperamos" title="Confirma tu asistencia" />
       </Reveal>
 
+      {familia ? (
+        <RsvpFamilia familia={familia} />
+      ) : (
+        <GenericoWhatsApp />
+      )}
+    </Section>
+  );
+}
+
+/** RSVP genérico (sin familia): solo botón de WhatsApp del evento. */
+function GenericoWhatsApp() {
+  const ok = waValido(invitacion.whatsapp);
+  const mensaje = `Hola, confirmo mi asistencia a los XV Años de ${invitacion.nombre}. `;
+  const href = ok ? waLink(invitacion.whatsapp, mensaje) : undefined;
+
+  return (
+    <>
       <Reveal delay={0.08}>
         <p
           className="fg-soft"
@@ -91,6 +106,6 @@ export default function Rsvp() {
           </span>
         )}
       </Reveal>
-    </Section>
+    </>
   );
 }
