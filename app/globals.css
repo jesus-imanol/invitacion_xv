@@ -193,6 +193,23 @@ body {
   color: var(--fg-dim);
 }
 
+/* Carrusel: oculta la barra de scroll (mantiene el swipe nativo) */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Zoom sutil en fotos de galería (se desactiva con reduced-motion) */
+.gal-item img {
+  transition: transform 0.55s var(--ease-out);
+}
+.gal-item:hover img {
+  transform: scale(1.05);
+}
+
 /* Tarjeta suave tipo "carta" (glass con relleno sólido de respaldo) */
 .panel-card {
   background: var(--panel);

@@ -46,16 +46,16 @@ export const invitacion = {
     {
       tipo: "Celebración Religiosa",
       nombre: "Iglesia de San Francisco de Asís",
-      direccion: "TODO: dirección exacta",
+      direccion: "Av. Galeana No. 9, 30640 Huixtla, Chis.",
       hora: "7:00 PM",
-      maps: "TODO: https://maps.google.com/?q=...",
+      maps: "https://www.google.com/maps/search/?api=1&query=Parroquia+San+Francisco+de+As%C3%ADs+Huixtla+Chiapas",
     },
     {
       tipo: "Recepción",
       nombre: "Salón Ámbar",
-      direccion: "TODO: dirección exacta",
+      direccion: "San Francisco, 30640 Huixtla, Chis.",
       hora: "8:30 PM",
-      maps: "TODO: https://maps.google.com/?q=...",
+      maps: "https://maps.app.goo.gl/GzkCBdDLbN3AzPBX8",
     },
   ],
 
