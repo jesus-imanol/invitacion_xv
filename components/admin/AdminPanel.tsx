@@ -20,10 +20,16 @@ export default function AdminPanel({
 }) {
   const router = useRouter();
   const [tab, setTab] = useState<"familias" | "validar">("familias");
+  const [filtro, setFiltro] = useState<"todas" | "confirmadas" | "sin">("todas");
 
   const totalPases = familias.reduce((s, f) => s + f.pases, 0);
   const confirmadas = familias.filter((f) => f.confirmado).length;
+  const sinConfirmar = familias.length - confirmadas;
   const validadas = familias.filter((f) => f.validado).length;
+
+  const familiasFiltradas = familias.filter((f) =>
+    filtro === "confirmadas" ? f.confirmado : filtro === "sin" ? !f.confirmado : true
+  );
 
   async function logout() {
     await createClient().auth.signOut();
@@ -81,15 +87,33 @@ export default function AdminPanel({
 
           <NuevaFamiliaForm />
 
-          <div style={{ marginTop: "1.5rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-            {familias.length === 0 && (
+          {/* Filtro por estado de confirmación */}
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
+            <Chip activo={filtro === "todas"} onClick={() => setFiltro("todas")}>
+              Todas ({familias.length})
+            </Chip>
+            <Chip activo={filtro === "confirmadas"} onClick={() => setFiltro("confirmadas")}>
+              Confirmadas ({confirmadas})
+            </Chip>
+            <Chip activo={filtro === "sin"} onClick={() => setFiltro("sin")}>
+              Sin confirmar ({sinConfirmar})
+            </Chip>
+          </div>
+
+          <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+            {familias.length === 0 ? (
               <p style={{ color: "#6a6d92", fontSize: "0.9rem" }}>
                 Aún no hay familias. Agrega la primera arriba.
               </p>
+            ) : familiasFiltradas.length === 0 ? (
+              <p style={{ color: "#6a6d92", fontSize: "0.9rem" }}>
+                No hay familias en este filtro.
+              </p>
+            ) : (
+              familiasFiltradas.map((f) => (
+                <FamiliaRow key={f.id} familia={f} baseUrl={baseUrl} />
+              ))
             )}
-            {familias.map((f) => (
-              <FamiliaRow key={f.id} familia={f} baseUrl={baseUrl} />
-            ))}
           </div>
         </>
       ) : (
@@ -100,6 +124,36 @@ export default function AdminPanel({
         <CreditFooter />
       </div>
     </div>
+  );
+}
+
+function Chip({
+  activo,
+  onClick,
+  children,
+}: {
+  activo: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onClick}
+      style={{
+        border: activo ? "1px solid #4A2BC9" : "1px solid #d6d8ea",
+        background: activo ? "#efeafd" : "#fff",
+        color: activo ? "#2a1c86" : "#4a4d75",
+        borderRadius: 9999,
+        padding: "0.4rem 0.95rem",
+        fontSize: "0.78rem",
+        fontWeight: activo ? 600 : 400,
+        cursor: "pointer",
+        minHeight: 38,
+      }}
+    >
+      {children}
+    </button>
   );
 }
 
