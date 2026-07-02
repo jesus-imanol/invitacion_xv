@@ -96,7 +96,7 @@ export const invitacion = {
 
   // --- Autor / créditos (sello + contacto para contrataciones) ---
   autor: {
-    nombre: "Jesús Imanol Castillo Avendaño",
+    nombre: "Ing. Jesús Imanol Castillo Avendaño",
     whatsapp: "5219611798392", // 52 + 1 + 9611798392
     whatsappDisplay: "961 179 8392",
   },

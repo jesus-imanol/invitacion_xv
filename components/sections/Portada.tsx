@@ -42,7 +42,7 @@ export default function Portada() {
         <div
           style={{
             position: "relative",
-            width: "clamp(220px, 72vw, 330px)",
+            width: "clamp(200px, 66vw, 300px)",
             marginInline: "auto",
             marginBottom: "1.5rem",
           }}
@@ -59,7 +59,7 @@ export default function Portada() {
             <div
               style={{
                 position: "relative",
-                aspectRatio: "5 / 6",
+                aspectRatio: "2 / 3",
                 borderRadius: "46% 46% 9px 9px / 28% 28% 3% 3%",
                 overflow: "hidden",
                 background: "var(--lavender)",
@@ -69,8 +69,8 @@ export default function Portada() {
                 src={galeriaDestacada.src}
                 alt={galeriaDestacada.alt}
                 fill
-                sizes="(max-width: 640px) 72vw, 330px"
-                style={{ objectFit: "cover", objectPosition: "center 12%" }}
+                sizes="(max-width: 640px) 66vw, 300px"
+                style={{ objectFit: "cover", objectPosition: "center 20%" }}
                 priority
               />
             </div>

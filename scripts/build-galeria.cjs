@@ -3,23 +3,24 @@
 // Uso: node scripts/build-galeria.cjs
 const fs = require("fs");
 const path = require("path");
+const { createHash } = require("crypto");
 const { imageSize } = require("image-size");
+
+const hash = (buf) => createHash("md5").update(buf).digest("hex").slice(0, 8);
 
 const SRC = "public/xv_sol_imagenes_quinceaniera/xv_sol_imagenes_quinceaniera";
 const OUT_DIR = "public/galeria";
 
-const featured = { file: "mirando el anillo.jpeg", slug: "destacada", alt: "Sol Angélica en sus XV Años" };
+const featured = { file: "jardin.jpeg", slug: "destacada", alt: "Sol Angélica en el jardín" };
 
 // [archivo original, slug, alt] — curación (se omiten casi-duplicados)
 const items = [
   ["1.jpeg", "cuerpo-completo", "Sol Angélica en sus XV Años"],
   ["de frente.jpeg", "de-frente", "Sol Angélica de frente"],
-  ["mirada a la camara.jpeg", "mirada-camara", "Mirada a la cámara"],
   ["foto en balcon.jpeg", "balcon", "En el balcón"],
   ["mano en la cintura jdin.jpeg", "jardin-cintura", "En el jardín"],
-  ["jardin.jpeg", "jardin", "En el jardín"],
+  ["mirando el anillo.jpeg", "anillo", "Mirando el anillo"],
   ["de espalda ramo.jpeg", "espalda-ramo", "De espaldas con el ramo"],
-  ["mano alzada.jpeg", "mano-alzada", "Con la mano en alto"],
   ["frente zoom.jpeg", "retrato", "Retrato"],
   ["pasillo mano cintura.jpeg", "pasillo-cintura", "En el pasillo"],
   ["de frente pasillo.jpeg", "pasillo-frente", "En el pasillo"],
@@ -34,6 +35,8 @@ const items = [
   ["asillo 1.jpeg", "pasillo-1", "En el pasillo"],
 ];
 
+// Limpia la carpeta cada corrida (el script es la fuente de verdad; sin huérfanos)
+fs.rmSync(OUT_DIR, { recursive: true, force: true });
 fs.mkdirSync(OUT_DIR, { recursive: true });
 
 function copyAndSize(file, slug) {
@@ -44,8 +47,10 @@ function copyAndSize(file, slug) {
   }
   const buf = fs.readFileSync(from);
   const { width, height } = imageSize(buf);
-  fs.writeFileSync(path.join(OUT_DIR, slug + ".jpeg"), buf);
-  return { src: `/galeria/${slug}.jpeg`, w: width, h: height };
+  // hash en el NOMBRE: URL única por contenido → nunca sirve caché viejo, sin query.
+  const name = `${slug}.${hash(buf)}.jpeg`;
+  fs.writeFileSync(path.join(OUT_DIR, name), buf);
+  return { src: `/galeria/${name}`, w: width, h: height };
 }
 
 const fd = copyAndSize(featured.file, featured.slug);
