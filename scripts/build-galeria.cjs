@@ -8,10 +8,11 @@ const { imageSize } = require("image-size");
 const SRC = "public/xv_sol_imagenes_quinceaniera/xv_sol_imagenes_quinceaniera";
 const OUT_DIR = "public/galeria";
 
-const featured = { file: "1.jpeg", slug: "destacada", alt: "Sol Angélica con su vestido de XV Años" };
+const featured = { file: "mirando el anillo.jpeg", slug: "destacada", alt: "Sol Angélica en sus XV Años" };
 
 // [archivo original, slug, alt] — curación (se omiten casi-duplicados)
 const items = [
+  ["1.jpeg", "cuerpo-completo", "Sol Angélica en sus XV Años"],
   ["de frente.jpeg", "de-frente", "Sol Angélica de frente"],
   ["mirada a la camara.jpeg", "mirada-camara", "Mirada a la cámara"],
   ["foto en balcon.jpeg", "balcon", "En el balcón"],
@@ -20,7 +21,6 @@ const items = [
   ["de espalda ramo.jpeg", "espalda-ramo", "De espaldas con el ramo"],
   ["mano alzada.jpeg", "mano-alzada", "Con la mano en alto"],
   ["frente zoom.jpeg", "retrato", "Retrato"],
-  ["mirando el anillo.jpeg", "anillo", "Mirando el anillo"],
   ["pasillo mano cintura.jpeg", "pasillo-cintura", "En el pasillo"],
   ["de frente pasillo.jpeg", "pasillo-frente", "En el pasillo"],
   ["pasillo.jpeg", "pasillo", "En el pasillo"],

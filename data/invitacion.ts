@@ -60,7 +60,8 @@ export const invitacion = {
   ],
 
   // --- Código de vestimenta ---
-  vestimenta: "Etiqueta rigurosa", // TODO confirmar
+  vestimenta: "Semiformal",
+  vestimentaNota: "Vístete elegante y con estilo, sin llegar a etiqueta rigurosa.",
   colorReservado: { label: "Índigo (color de la quinceañera)", hex: "#1B0980" },
 
   // --- Mesa de regalos ---

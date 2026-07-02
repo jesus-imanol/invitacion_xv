@@ -24,7 +24,7 @@ export default function Portada() {
           position: "absolute",
           left: "50%",
           top: "46%",
-          width: "min(110vw, 720px)",
+          width: "min(100%, 720px)",
           height: "min(80vw, 520px)",
           transform: "translate(-50%, -50%)",
           background:
@@ -42,7 +42,7 @@ export default function Portada() {
         <div
           style={{
             position: "relative",
-            width: "clamp(170px, 55vw, 240px)",
+            width: "clamp(220px, 72vw, 330px)",
             marginInline: "auto",
             marginBottom: "1.5rem",
           }}
@@ -59,7 +59,7 @@ export default function Portada() {
             <div
               style={{
                 position: "relative",
-                aspectRatio: "3 / 4",
+                aspectRatio: "5 / 6",
                 borderRadius: "46% 46% 9px 9px / 28% 28% 3% 3%",
                 overflow: "hidden",
                 background: "var(--lavender)",
@@ -69,8 +69,8 @@ export default function Portada() {
                 src={galeriaDestacada.src}
                 alt={galeriaDestacada.alt}
                 fill
-                sizes="(max-width: 640px) 55vw, 240px"
-                style={{ objectFit: "cover", objectPosition: "center 15%" }}
+                sizes="(max-width: 640px) 72vw, 330px"
+                style={{ objectFit: "cover", objectPosition: "center 12%" }}
                 priority
               />
             </div>

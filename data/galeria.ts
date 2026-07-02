@@ -4,11 +4,17 @@ export type Foto = { src: string; w: number; h: number; alt: string };
 export const galeriaDestacada: Foto = {
   "src": "/galeria/destacada.jpeg",
   "w": 1200,
-  "h": 1600,
-  "alt": "Sol Angélica con su vestido de XV Años"
+  "h": 1424,
+  "alt": "Sol Angélica en sus XV Años"
 };
 
 export const galeria: Foto[] = [
+  {
+    "src": "/galeria/cuerpo-completo.jpeg",
+    "w": 1200,
+    "h": 1600,
+    "alt": "Sol Angélica en sus XV Años"
+  },
   {
     "src": "/galeria/de-frente.jpeg",
     "w": 853,
@@ -56,12 +62,6 @@ export const galeria: Foto[] = [
     "w": 853,
     "h": 1280,
     "alt": "Retrato"
-  },
-  {
-    "src": "/galeria/anillo.jpeg",
-    "w": 1200,
-    "h": 1600,
-    "alt": "Mirando el anillo"
   },
   {
     "src": "/galeria/pasillo-cintura.jpeg",

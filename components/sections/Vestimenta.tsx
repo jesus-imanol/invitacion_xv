@@ -5,7 +5,7 @@ import { invitacion } from "@/data/invitacion";
 
 /** Código de vestimenta (sección clara) + color reservado para la quinceañera. */
 export default function Vestimenta() {
-  const { vestimenta, colorReservado } = invitacion;
+  const { vestimenta, vestimentaNota, colorReservado } = invitacion;
 
   return (
     <Section panel>
@@ -20,6 +20,20 @@ export default function Vestimenta() {
         >
           {vestimenta}
         </p>
+        {vestimentaNota && (
+          <p
+            className="fg-soft"
+            style={{
+              fontSize: "var(--text-body)",
+              maxWidth: "32ch",
+              marginInline: "auto",
+              marginTop: "0.6rem",
+              lineHeight: 1.6,
+            }}
+          >
+            {vestimentaNota}
+          </p>
+        )}
       </Reveal>
 
       <Reveal delay={0.16}>

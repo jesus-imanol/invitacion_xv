@@ -69,8 +69,6 @@ export default function Galeria() {
             scrollSnapType: "x mandatory",
             paddingBottom: "0.25rem",
             WebkitOverflowScrolling: "touch",
-            marginInline: "calc(50% - 50vw)",
-            paddingInline: "max(1rem, calc(50vw - 19rem))",
           }}
         >
           {carrusel.map((foto, i) => (

@@ -7,7 +7,7 @@ import { crearFamilia } from "@/app/admin/actions";
 export default function NuevaFamiliaForm() {
   const router = useRouter();
   const [nombre, setNombre] = useState("");
-  const [pases, setPases] = useState(2);
+  const [pases, setPases] = useState("2");
   const [error, setError] = useState<string | null>(null);
   const [pending, startTransition] = useTransition();
 
@@ -15,14 +15,19 @@ export default function NuevaFamiliaForm() {
     e.preventDefault();
     setError(null);
     if (!nombre.trim()) return;
+    const n = parseInt(pases, 10);
+    if (!Number.isFinite(n) || n < 1) {
+      setError("Indica el número de pases (mínimo 1).");
+      return;
+    }
     startTransition(async () => {
-      const res = await crearFamilia(nombre, pases);
+      const res = await crearFamilia(nombre, n);
       if (!res.ok) {
         setError(res.error ?? "No se pudo crear.");
         return;
       }
       setNombre("");
-      setPases(2);
+      setPases("2");
       router.refresh();
     });
   }
@@ -53,11 +58,12 @@ export default function NuevaFamiliaForm() {
       <label style={{ flex: "1 1 90px", display: "flex", flexDirection: "column", gap: "0.3rem", fontSize: "0.75rem", color: "#6a6d92" }}>
         Pases
         <input
-          type="number"
-          min={1}
-          max={50}
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
           value={pases}
-          onChange={(e) => setPases(Math.max(1, Number(e.target.value)))}
+          onChange={(e) => setPases(e.target.value.replace(/[^0-9]/g, ""))}
+          placeholder="2"
           style={input}
         />
       </label>
