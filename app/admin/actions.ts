@@ -16,6 +16,18 @@ export async function crearFamilia(nombre: string, pases: number) {
   return { ok: true as const };
 }
 
+/** Editar nombre y pases de una familia. */
+export async function editarFamilia(id: string, nombre: string, pases: number) {
+  const supabase = await createClient();
+  const { error } = await supabase
+    .from("familias")
+    .update({ nombre: nombre.trim(), pases })
+    .eq("id", id);
+  if (error) return { ok: false as const, error: error.message };
+  revalidatePath("/admin");
+  return { ok: true as const };
+}
+
 /** Eliminar familia. */
 export async function eliminarFamilia(id: string) {
   const supabase = await createClient();
