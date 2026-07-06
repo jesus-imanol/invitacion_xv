@@ -12,9 +12,11 @@ import type { AdminFamilia } from "@/components/admin/types";
 export default function FamiliaRow({
   familia,
   baseUrl,
+  esNueva = false,
 }: {
   familia: AdminFamilia;
   baseUrl: string;
+  esNueva?: boolean;
 }) {
   const router = useRouter();
   const qrRef = useRef<HTMLDivElement>(null);
@@ -137,6 +139,7 @@ export default function FamiliaRow({
         )}
 
         <div style={{ display: "flex", gap: "0.4rem", marginTop: "0.4rem", flexWrap: "wrap" }}>
+          {esNueva && <Badge color="#2f6fed">Nueva</Badge>}
           {familia.confirmado && (
             <Badge color="#2e8b6b">Confirmó {familia.confirmado_pases ?? familia.pases}</Badge>
           )}

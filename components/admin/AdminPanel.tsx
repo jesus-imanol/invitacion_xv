@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import NuevaFamiliaForm from "@/components/admin/NuevaFamiliaForm";
@@ -21,15 +21,27 @@ export default function AdminPanel({
   const router = useRouter();
   const [tab, setTab] = useState<"familias" | "validar">("familias");
   const [filtro, setFiltro] = useState<"todas" | "confirmadas" | "sin">("todas");
+  const [q, setQ] = useState("");
+
+  // "now" solo tras montar (evita mismatch de hidratación por Date.now)
+  const [now, setNow] = useState<number | null>(null);
+  useEffect(() => setNow(Date.now()), []);
+  const VENTANA_NUEVA = 24 * 60 * 60 * 1000; // 24h
 
   const totalPases = familias.reduce((s, f) => s + f.pases, 0);
   const confirmadas = familias.filter((f) => f.confirmado).length;
   const sinConfirmar = familias.length - confirmadas;
   const validadas = familias.filter((f) => f.validado).length;
 
-  const familiasFiltradas = familias.filter((f) =>
-    filtro === "confirmadas" ? f.confirmado : filtro === "sin" ? !f.confirmado : true
-  );
+  const norm = (s: string) =>
+    s.normalize("NFD").replace(/\p{Diacritic}/gu, "").toLowerCase().trim();
+  const nq = norm(q);
+
+  const familiasFiltradas = familias
+    .filter((f) =>
+      filtro === "confirmadas" ? f.confirmado : filtro === "sin" ? !f.confirmado : true
+    )
+    .filter((f) => (nq === "" ? true : norm(f.nombre).includes(nq)));
 
   async function logout() {
     await createClient().auth.signOut();
@@ -87,8 +99,73 @@ export default function AdminPanel({
 
           <NuevaFamiliaForm />
 
+          {/* Buscador */}
+          <div style={{ marginTop: "1.5rem" }}>
+            <label
+              htmlFor="buscar-familia"
+              style={{
+                display: "block",
+                fontSize: "0.7rem",
+                color: "#6a6d92",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                marginBottom: "0.35rem",
+              }}
+            >
+              Buscar familia
+            </label>
+            <div style={{ position: "relative" }}>
+              <span
+                aria-hidden
+                style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)", color: "#9a9dbb", fontSize: "1rem" }}
+              >
+                ⌕
+              </span>
+              <input
+                id="buscar-familia"
+                value={q}
+                onChange={(e) => setQ(e.target.value)}
+                placeholder="Escribe un nombre…"
+                style={{
+                  width: "100%",
+                  minHeight: 48,
+                  padding: "0.6rem 2.75rem",
+                  borderRadius: 12,
+                  border: "1px solid #d6d8ea",
+                  fontSize: 16, // ≥16px evita auto-zoom en iOS
+                  color: "#1f2147",
+                  background: "#fff",
+                }}
+              />
+              {q && (
+                <button
+                  type="button"
+                  onClick={() => setQ("")}
+                  aria-label="Limpiar búsqueda"
+                  style={{
+                    position: "absolute",
+                    right: 8,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    width: 34,
+                    height: 34,
+                    borderRadius: 9999,
+                    border: "none",
+                    background: "#eef0f7",
+                    color: "#6a6d92",
+                    cursor: "pointer",
+                    fontSize: "1.15rem",
+                    lineHeight: 1,
+                  }}
+                >
+                  ×
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Filtro por estado de confirmación */}
-          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "1.5rem" }}>
+          <div style={{ display: "flex", gap: "0.5rem", flexWrap: "wrap", marginTop: "0.9rem" }}>
             <Chip activo={filtro === "todas"} onClick={() => setFiltro("todas")}>
               Todas ({familias.length})
             </Chip>
@@ -100,18 +177,34 @@ export default function AdminPanel({
             </Chip>
           </div>
 
-          <div style={{ marginTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+          {(nq !== "" || filtro !== "todas") && familias.length > 0 && (
+            <p style={{ fontSize: "0.75rem", color: "#8a8db0", marginTop: "0.75rem" }}>
+              Mostrando {familiasFiltradas.length} de {familias.length}
+            </p>
+          )}
+
+          <div style={{ marginTop: "0.75rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
             {familias.length === 0 ? (
               <p style={{ color: "#6a6d92", fontSize: "0.9rem" }}>
                 Aún no hay familias. Agrega la primera arriba.
               </p>
             ) : familiasFiltradas.length === 0 ? (
               <p style={{ color: "#6a6d92", fontSize: "0.9rem" }}>
-                No hay familias en este filtro.
+                {nq !== ""
+                  ? `No se encontró ninguna familia con “${q}”.`
+                  : "No hay familias en este filtro."}
               </p>
             ) : (
               familiasFiltradas.map((f) => (
-                <FamiliaRow key={f.id} familia={f} baseUrl={baseUrl} />
+                <FamiliaRow
+                  key={f.id}
+                  familia={f}
+                  baseUrl={baseUrl}
+                  esNueva={
+                    now !== null &&
+                    now - new Date(f.created_at).getTime() < VENTANA_NUEVA
+                  }
+                />
               ))
             )}
           </div>
